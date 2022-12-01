@@ -4,6 +4,9 @@
  * @brief Arduino UART design for communicating with ESP32
  * @version 0.1
  * @date 2022-11-29
+ * @warning not intended to run while ESP32 is being flashed
+ * 
+ * last updated 2022-11-30
  */
 
 #include "ard_uart.h"
@@ -26,8 +29,8 @@
 
 /* global variables */
 
-bool query;
-int state;
+bool query; // is query command send
+int state;  // current motor state
 
 /* implementation */
 
@@ -49,9 +52,9 @@ void loop() {
 
 
 void uart_read() {
-  if (Serial1.available()) {
+  if (Serial1.available()) {  // check if command sent
     char in = Serial1.read(); // reads 1-byte
-    printsh(in);
+    printsh(in);              // prints debug statement
     if ( in == MOTOR_QUERY ) {
       prints("QUERY");
       query = true;
@@ -68,7 +71,7 @@ void uart_read() {
       prints("CHANGE to speed 3");
       state = MOTOR_SPEED3;
     }
-    else {
+    else {  // error; may be triggered by ESP32 flash
       prints("OTHER");
     }
   }

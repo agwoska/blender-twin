@@ -5,6 +5,8 @@
  *      currently set up for testing
  * @version 0.1
  * @date 2022-11-29
+ * 
+ * last updated: 2022-11-30
  */
 
 #include "esp_uart.h"
@@ -15,10 +17,14 @@ int i;
 void setup() {
   pinMode(2, OUTPUT); // enable blue LED
   Serial.begin(9600); // enable UART
-  delay(100);
+  delay(100);         // ensure UART availability for startup
   i = 0;
 }
 
+/**
+ * @brief UART command message loop for Arduino
+ * 
+ */
 void looper() {
   if ( i == 0 ) {
     Serial.write(MOTOR_QUERY);
@@ -41,14 +47,14 @@ void looper() {
 }
 
 void loop() {
-  if (Serial.available()) {  // UART RX available
-    char in = Serial.read(); // reads 1-byte
+  if (Serial.available()) { // UART RX available
+    char in = Serial.read();// reads 1-byte
 //    Serial.println(in, HEX);
-    digitalWrite(2, HIGH);   // turn on LED
+    digitalWrite(2, HIGH);  // turn on LED
     delay(DELAY/2); // 5s
-    digitalWrite(2, LOW);    // turn off LED
+    digitalWrite(2, LOW);   // turn off LED
   }
-  else {
+  else {                    // UART TX; go to next command
     looper();
   }
 }

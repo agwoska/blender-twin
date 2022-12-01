@@ -4,6 +4,8 @@
  * @brief defines useful parts for UART communications for project
  * @version 0.1
  * @date 2022-11-29
+ * 
+ * last updated 2022-11-30
  */
 
 #pragma once
@@ -23,9 +25,19 @@
 #define MOTOR_SPEED3    ( 0x04 )
 #define MOTOR_OFF       ( 0x08 )
 
-/* prototypes */
+/* function prototypes */
 
+/**
+ * @brief UART RX for receiving commands
+ * reads 1-byte of data from ESP32
+ */
 void uart_read();
+
+/**
+ * @brief UART TX for sending commands if queried
+ * sends 1-byte of data to ESP32
+ * commands located above as _motor commands_
+ */
 void uart_write();
 
 #endif // ARD_UART_H
