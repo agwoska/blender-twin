@@ -5,7 +5,7 @@
  * @author U Shin
  * @brief Arduino UART design for communicating with ESP32
  * @version 0.1
- * @date 2022-12-06
+ * @date 2022-12-05
  * @warning not intended to run while ESP32 is being flashed
  * 
  * last updated 2022-12-06
