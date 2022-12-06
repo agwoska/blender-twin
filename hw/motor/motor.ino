@@ -1,3 +1,36 @@
+/**
+ * @file ard_uart.ino
+ * @author Andrew Woska ( andrew@woska.org )
+ * @author Arelson Rapisura
+ * @author U Shin
+ * @brief Arduino UART design for communicating with ESP32
+ * @version 0.1
+ * @date 2022-12-06
+ * @warning not intended to run while ESP32 is being flashed
+ * 
+ * last updated 2022-12-06
+ */
+
+#include "ard_uart.h"
+
+/* Macros */
+
+// print safe
+#ifdef DEBUG
+#define prints(s) ( Serial.println(s) )
+#else
+#define prints() ()
+#endif //DEBUG
+
+// print safe hexidecimal
+#ifdef DEBUG
+#define printsh(s) ( Serial.println(s, HEX) )
+#else
+#define printsh() ()
+#endif //DEBUG
+
+/* implementation */
+
 // Motor A connections
 int enA = 9;
 int in1 = 8;
@@ -15,6 +48,7 @@ int speed3_btn_state = 13;
 
 bool on=false;
 
+
 void setup() {
 	// Set all the motor control pins to outputs
 	pinMode(enA, OUTPUT);
@@ -31,7 +65,11 @@ void setup() {
 	digitalWrite(in1, LOW);
 	digitalWrite(in2, LOW);
 
-  Serial.begin(9600);
+  // Serial.begin(9600);
+  #ifdef DEBUG
+  Serial.begin(9600);   // serial monitor
+  #endif // DEBUG
+  Serial1.begin(9600);  // UART to ESP
 }
 
 
@@ -131,4 +169,41 @@ void speedSlowControl() {
 		analogWrite(in1, i);
 		delay(20);
 	}
+}
+
+
+/* function implementations */
+
+void uart_read() {
+  if (Serial1.available()) {  // check if command sent
+    char in = Serial1.read(); // reads 1-byte
+    printsh(in);              // prints debug statement
+    if ( in == MOTOR_QUERY ) {
+      prints("QUERY");
+      query = true;
+    }
+    else if ( in == MOTOR_SPEED1 ) {
+      prints("CHANGE to speed 1");
+      state = MOTOR_SPEED1;
+    }
+    else if ( in == MOTOR_SPEED2 ) {
+      prints("CHANGE to speed 2");
+      state = MOTOR_SPEED2;
+    }
+    else if ( in == MOTOR_SPEED3 ) {
+      prints("CHANGE to speed 3");
+      state = MOTOR_SPEED3;
+    }
+    else {  // error; may be triggered by ESP32 flash
+      prints("OTHER");
+    }
+  }
+}
+
+
+void uart_write() {
+  if ( !query ) return;
+  delay(100); // ensure availablility of UART
+  Serial1.write(state);
+  query = false;
 }
