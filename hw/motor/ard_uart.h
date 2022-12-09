@@ -2,7 +2,7 @@
  * @file ard_uart.h
  * @author Andrew Woska ( andrew@woska.org )
  * @brief defines useful parts for UART communications for project
- * @version 0.1
+ * @version 1.0
  * @date 2022-11-29
  * 
  * last updated 2022-11-30
@@ -16,7 +16,7 @@
 /* constants */
 
 // comment if no debug messages wanted
-#define DEBUG
+// #define DEBUG
 
 // motor commands
 #define MOTOR_QUERY     ( 0x00 )
