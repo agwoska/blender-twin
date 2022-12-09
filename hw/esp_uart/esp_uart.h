@@ -2,7 +2,7 @@
  * @file esp_uart.h
  * @author Andrew Woska ( andrew@woska.org )
  * @brief defines useful parts for UART communications for project
- * @version 0.1
+ * @version 1.0
  * @date 2022-11-29
  */
 
