@@ -3,15 +3,15 @@
  * @author Andrew Woska ( andrew@woska.org )
  * @brief ESP32 UART design for communicating with ESP32
  *      currently set up for testing
- * @version 0.1
+ * @version 1.0
  * @date 2022-11-29
  * 
- * last updated: 2022-11-30
+ * last updated: 2022-12-08
  */
 
 #include "esp_uart.h"
 
-#define DELAY   ( 10000 )
+#define DELAY   ( 1000 )
 int i;
 
 void setup() {
@@ -31,17 +31,21 @@ void looper() {
     delay(DELAY);
   }
   else if ( i == 1 ) {
-    Serial1.write(MOTOR_SPEED1);
+    Serial.write(MOTOR_SPEED1);
     delay(DELAY);
   }
   else if ( i == 2 ) {
     Serial.write(MOTOR_SPEED2);
     delay(DELAY);
   }
-  else {
+  else if ( i == 3 ) {
     Serial.write(MOTOR_SPEED3);
     delay(DELAY);
+  }
+  else {
+    Serial.write(MOTOR_OFF);
     i = -1;
+    delay(DELAY);
   }
   ++i;
 }
